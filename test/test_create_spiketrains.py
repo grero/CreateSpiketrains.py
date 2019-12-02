@@ -32,16 +32,16 @@ def test_pick_lines(qtbot):
     window.pick_event(event)
     window.save_spiketrains(notify=False) 
     #check that we got what we expected
-    q1 =  mio.loadmat("cell01/spiketrain.mat")
+    q1 =  mio.loadmat("cell01/unit.mat")
     hh1 = hashlib.sha1(q1["timestamps"].tostring()).hexdigest()
     assert hh1 == '8093ffc2459eb613bcc10f65e34b0c47568e22ae'
-    q2 =  mio.loadmat("cell02/spiketrain.mat")
+    q2 =  mio.loadmat("cell02/unit.mat")
     hh2 = hashlib.sha1(q2["timestamps"].tostring()).hexdigest()
     assert hh2 == '03de5a1a19919c3ede7030d760aebcf671379c7f'
     os.unlink("hmmsort.mat")
     os.unlink("spike_templates.hdf5")
-    os.unlink("cell01/spiketrain.mat")
-    os.unlink("cell02/spiketrain.mat")
+    os.unlink("cell01/unit.mat")
+    os.unlink("cell02/unit.mat")
     os.rmdir("cell01")
     os.rmdir("cell02")
     os.chdir(cwd)
