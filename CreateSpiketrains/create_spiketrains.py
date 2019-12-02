@@ -262,41 +262,6 @@ class ViewWidget(QMainWindow):
         os.chdir(cwd)
         self.plot_waveforms(self.waveforms)
 
-def plot_waveforms(waveforms):
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.set_xlabel("State")
-    ax.set_ylabel("Amplitude")
-    for i in range(waveforms.shape[0]):
-        ax.plot(waveforms[i, 0, :], label="Waveform %d" % (i, ), picker=5)
-    plt.legend()
-    fig.canvas.mpl_connect('pick_event', pick_event)
-
-def pick_event(event):
-    artist = event.artist
-    lw = artist.get_linewidth()
-    label = artist.get_label()
-    if lw == 1.5:
-        artist.set_linewidth(2*lw)
-        picked_lines.append(label)
-    elif lw > 1.5:
-        artist.set_linewidth(lw/2)
-        picked_lines.remove(label)
-    artist.figure.canvas.draw()
-
-
-def select_waveforms(fname="spike_templates.hdf5"):
-        files = glob.glob(fname)
-        if files:
-            for f in files:
-                with h5py.File(f, "r") as ff:
-                    waveforms = ff["spikeForms"][:]
-                    pp = ff["p"][:]
-                    plot_waveforms(waveforms, pp)
-                    ff.close()
-
 
 def create_spiketrains(window_class):
     app_created = False
