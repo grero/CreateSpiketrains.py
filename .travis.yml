@@ -4,6 +4,12 @@ python:
 env:
   - NUMBA_DISABLE_JIT=1
 
+addons:
+  apt:
+    packages:
+    - x11-utils
+    - libxkbcommon-x11-0
+
 services: xvfb
 
 before_install:
