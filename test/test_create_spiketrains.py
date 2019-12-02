@@ -1,5 +1,5 @@
-import hmmsort
-import hmmsort.create_spiketrains as create_spiketrains
+import CreateSpiketrains
+import CreateSpiketrains.create_spiketrains as create_spiketrains
 import matplotlib
 import os
 import pytest
