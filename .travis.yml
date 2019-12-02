@@ -1,6 +1,6 @@
 language: python
 python:
-    - "3.7_with_system_site_packages"
+    - "3.7"
 env:
   - NUMBA_DISABLE_JIT=1
 
