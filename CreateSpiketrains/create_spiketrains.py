@@ -191,7 +191,7 @@ class ViewWidget(QMainWindow):
             	cdir = os.path.join(os.path.dirname(self.sortfile), cname)
             	if not os.path.isdir(cdir):
             	    os.mkdir(cdir)
-            	fname = cdir + os.path.sep + "spiketrain.mat"
+                fname = cdir + os.path.sep + "unit.mat"
             	mio.savemat(fname, {"timestamps": merge_timestamps,
                                     "spikeForm": merge_waveforms})
             	self.counter += 1
