@@ -2,13 +2,11 @@
 from distutils.core import setup,Extension
 import numpy
 
-setup(name='hmmsort',
+setup(name='CreateSpiketrains',
     version='0.5',
-    description='Python Npt tools',
+    description='Create spiketrains from hmmsort',
     author='Roger Herikstad',
     author_email='roger.herikstad@gmail.com',
-    packages=['hmmsort'],
-    scripts=['hmmsort/hmm_learn.py', 
-             'hmmsort/create_spiketrains.py',
-             'hmmsort/chunker.py']
+    packages=['CreateSpiketrains'],
+    scripts=['CreateSpiketrains/create_spiketrains.py']
 )
