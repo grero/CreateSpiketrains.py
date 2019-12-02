@@ -1,6 +1,6 @@
 language: python
 python:
-    - "2.7_with_system_site_packages"
+    - "3.7_with_system_site_packages"
 env:
   - NUMBA_DISABLE_JIT=1
 
@@ -16,7 +16,7 @@ install:
     - pip install .
 
 script:
-    - coverage run --source hmmsort -m py.test -s -q
+    - coverage run --source CreateSpiketrains -m py.test -s -q
 
 after_success:
     - coverage report
