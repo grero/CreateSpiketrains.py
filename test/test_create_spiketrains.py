@@ -26,11 +26,11 @@ def test_pick_lines(qtbot):
     window.select_waveforms()
     qtbot.addWidget(window)
     #simulate a pick event
-    event = matplotlib.backend_bases.PickEvent("A pick", window.figure.canvas, [],window.figure.axes[0].lines[0]) 
-    window.pick_event(event)
-    event = matplotlib.backend_bases.PickEvent("A pick", window.figure.canvas, [],window.figure.axes[0].lines[1]) 
-    window.pick_event(event)
-    window.save_spiketrains(notify=False) 
+    event1 = matplotlib.backend_bases.PickEvent("A pick", window.figure.canvas, [],window.figure.axes[0].lines[0])
+    window.pick_event(event1)
+    event2 = matplotlib.backend_bases.PickEvent("A pick", window.figure.canvas, [],window.figure.axes[0].lines[1])
+    window.pick_event(event2)
+    window.save_spiketrains(notify=False)
     #check that we got what we expected
     q1 =  mio.loadmat("cell01/unit.mat")
     hh1 = hashlib.sha1(q1["timestamps"].tostring()).hexdigest()
@@ -42,6 +42,11 @@ def test_pick_lines(qtbot):
     os.unlink("cell02/unit.mat")
     os.rmdir("cell01")
     os.rmdir("cell02")
+
+    #unpick
+    window.pick_event(event1)
+    window.pick_event(event2)
+    window.counter = 0
 
     #merge waveforms
     mevent = matplotlib.backend_bases.MouseEvent("Mouse event", window.figure.canvas, 0,0,button=matplotlib.backend_bases.MouseButton.LEFT, key="shift")
