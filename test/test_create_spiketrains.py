@@ -3,13 +3,13 @@ import CreateSpiketrains.create_spiketrains as create_spiketrains
 import matplotlib
 import os
 import pytest
-import urllib2
+from urllib.request import urlopen
 import tempfile
 import hashlib
 import scipy.io as mio
 
 def download_file(fname):
-    _file = urllib2.urlopen("http://cortex.nus.edu.sg/testdata/array01/channel001/%s" % (fname,))
+    _file = urlopen("http://cortex.nus.edu.sg/testdata/array01/channel001/%s" % (fname,))
     with open(fname, "wb") as output:
         output.write(_file.read())
 
