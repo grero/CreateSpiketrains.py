@@ -1,6 +1,7 @@
 import sys
 import os
 import math
+import functools
 import scipy.io as mio
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -135,7 +136,7 @@ class ViewWidget(QMainWindow):
                 p = ax.plot(waveforms[:, 0, i], label="Waveform %d" % (i, ), picker=5)
         else:
             print("this is not hdf5")
-            for i in xrange(waveforms.shape[0]):
+            for i in range(waveforms.shape[0]):
                 ax.axhline(y=noise, color='k')
                 ax.axhline(y=-noise, color='k')
                 p = ax.plot(waveforms[i, 0, :], label="Waveform %d" % (i, ), picker=5)
@@ -158,8 +159,9 @@ class ViewWidget(QMainWindow):
             else:
                 self.sampling_rate = qq.get("samplingRate",qq.get("samplingrate", 0.0))
             self.sampling_rate = self.sampling_rate[:]*1.0  # convert to float
-            template_idx = [int(filter(lambda x: x.isdigit(), v)) for v in self.picked_lines]
-            merge_idx = [int(filter(lambda x: x.isdigit(), v)) for v in self.merged_lines]
+            flatten = lambda xx: functools.reduce(lambda x,y: x + y, xx,[])
+            template_idx = flatten([[int(f) for f in filter(lambda x: x.isdigit(), v)] for v in self.picked_lines])
+            merge_idx = flatten([[int(f) for f in filter(lambda x: x.isdigit(), v)] for v in self.merged_lines])
             pidx = int(self.nstates/3)
             if qq["mlseq"].shape[0] == self.waveforms.shape[0]:
                 uidx, tidx = np.where(qq["mlseq"][:] == pidx)
@@ -263,7 +265,7 @@ def plot_waveforms(waveforms):
     ax.spines["right"].set_visible(False)
     ax.set_xlabel("State")
     ax.set_ylabel("Amplitude")
-    for i in xrange(waveforms.shape[0]):
+    for i in range(waveforms.shape[0]):
         ax.plot(waveforms[i, 0, :], label="Waveform %d" % (i, ), picker=5)
     plt.legend()
     fig.canvas.mpl_connect('pick_event', pick_event)
