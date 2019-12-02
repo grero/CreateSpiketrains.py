@@ -59,6 +59,8 @@ def test_pick_lines(qtbot):
     window.save_spiketrains(notify=False)
     assert os.path.isfile("cell01/unit.mat")
     assert os.path.isfile("cell02/unit.mat") == False
+    os.unlink("cell01/unit.mat")
+    os.rmdir("cell01")
     os.unlink("hmmsort.mat")
     os.unlink("spike_templates.hdf5")
 
