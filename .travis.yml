@@ -4,6 +4,8 @@ python:
 env:
   - NUMBA_DISABLE_JIT=1
 
+services: xvfb
+
 before_install:
     - pip install PyQt5
     - pip install coveralls
