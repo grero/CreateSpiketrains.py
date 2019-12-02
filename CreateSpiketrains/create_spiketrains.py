@@ -110,12 +110,15 @@ class ViewWidget(QMainWindow):
             artist.set_linewidth(lw/2)
             self.picked_lines.remove(label)
 
-        self.key = QApplication.keyboardModifiers()
-        if (self.key == Qt.ShiftModifier) and (lw == 1.5) : # detect waveforms to merge
+        if event.mouseevent:
+            self.key = event.mouseevent.key
+        else:
+            self.key = QApplication.keyboardModifiers()
+        if (self.key == Qt.ShiftModifier or self.key == "shift") and (lw == 1.5) : # detect waveforms to merge
             artist.set_color("gray")
             self.merged_lines.append(label)
             self.merged_colors.append(self.color)
-        elif (self.key == Qt.ShiftModifier) and (lw > 1.5):
+        elif (self.key == Qt.ShiftModifier or self.key == "shift") and (lw > 1.5):
             index = self.merged_lines.index(label)
             artist.set_color(self.merged_colors[index])
             self.merged_lines.remove(label)
