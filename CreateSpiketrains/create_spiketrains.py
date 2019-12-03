@@ -179,22 +179,22 @@ class ViewWidget(QMainWindow):
             if self.ishdf5==True:
                 self.waveforms = np.transpose(self.waveforms)
             if merge_idx:
-            	for i in merge_idx:
-            		idx = merge_idx.index(i)
-            		merge_timestamps = self.addto_array(merge_timestamps, tot_timestamps[idx])
+                for i in merge_idx:
+                    idx = merge_idx.index(i)
+                    merge_timestamps = self.addto_array(merge_timestamps, tot_timestamps[idx])
 
-            	merge_timestamps = list(set(merge_timestamps))
-            	merge_timestamps.sort()
+                merge_timestamps = list(set(merge_timestamps))
+                merge_timestamps.sort()
 
-            	merge_waveforms = np.mean(self.waveforms[merge_idx,:,:], axis = 0)
-            	cname = "cell%02d" % (self.counter+1, )
-            	cdir = os.path.join(os.path.dirname(self.sortfile), cname)
-            	if not os.path.isdir(cdir):
-            	    os.mkdir(cdir)
-                fname = cdir + os.path.sep + "unit.mat"
-            	mio.savemat(fname, {"timestamps": merge_timestamps,
+                merge_waveforms = np.mean(self.waveforms[merge_idx,:,:], axis = 0)
+                cname = "cell%02d" % (self.counter+1, )
+                cdir = os.path.join(os.path.dirname(self.sortfile), cname)
+                if not os.path.isdir(cdir):
+                    os.mkdir(cdir)
+                fname = os.path.sep.join([cdir, "unit.mat"])
+                mio.savemat(fname, {"timestamps": merge_timestamps,
                                     "spikeForm": merge_waveforms})
-            	self.counter += 1
+                self.counter += 1
 
             if saveind_idx:
                 for i in saveind_idx:
