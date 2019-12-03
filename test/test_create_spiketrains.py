@@ -66,10 +66,14 @@ def test_pick_lines(qtbot):
     #auto-discovery
     os.mkdir("channel001")
     os.mkdir("channel002")
+    os.mkdir("channel003")
     shutil.copyfile("hmmsort.mat", "channel001/hmmsort.mat")
     shutil.copyfile("spike_templates.hdf5", "channel001/spike_templates.hdf5")
     shutil.copyfile("hmmsort.mat", "channel002/hmmsort.mat")
     shutil.copyfile("spike_templates.hdf5", "channel002/spike_templates.hdf5")
+    shutil.copyfile("hmmsort.mat", "channel003/hmmsort.mat")
+    shutil.copyfile("spike_templates.hdf5", "channel003/spike_templates.hdf5")
+    os.mkdir("channel003/cell01")
     os.unlink("hmmsort.mat")
     os.unlink("spike_templates.hdf5")
     window.find_files()
@@ -81,7 +85,8 @@ def test_pick_lines(qtbot):
     assert window.filelist.itemText(1) == "./channel002/hmmsort.mat"
 
     #cleanup
-    for ch in ['channel001','channel002']:
+    os.rmdir("channel003/cell01")
+    for ch in ['channel001','channel002','channel003']:
         for f in ['hmmsort.mat','spike_templates.hdf5']:
             os.unlink(os.path.join(ch,f))
         os.rmdir(ch)

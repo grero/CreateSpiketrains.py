@@ -223,17 +223,22 @@ class ViewWidget(QMainWindow):
                 retval = msg.exec_()
 
     def find_files(self):
+        for root, dirs, files in os.walk("."):
+            for file in files:
+                if file == "hmmsort.mat":
+                    celldirs = glob.glob(os.path.join(root, "cell*"))
+                    if len(celldirs) == 0:
+                        self.filelist.addItem(os.path.join(root, file))
+        if self.filelist.count() > 0:
+            self.filelist.setCurrentIndex(0)
+            self.select_file(0)
+
+    def select_file(self,i):
         #reset counters
         self.counter = 0
         self.merged_lines = []
         self.merged_colors = []
         self.picked_lines = []
-        for root, dirs, files in os.walk("."):
-            for file in files:
-                if file == "hmmsort.mat":
-                    self.filelist.addItem(os.path.join(root, file))
-
-    def select_file(self,i):
         self.select_waveforms(self.filelist.currentText())
 
     def select_waveforms(self, fname="hmmsort.mat", cinv_fname = "spike_templates.hdf5"):
