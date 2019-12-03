@@ -59,6 +59,9 @@ def test_pick_lines(qtbot):
     os.unlink("hmmsort.mat")
     os.unlink("spike_templates.hdf5")
     window.find_files()
+    assert len(window.picked_lines) == 0
+    assert len(window.merged_lines) == 0
+
     assert window.filelist.count() == 2
     assert window.filelist.itemText(0) == "./channel001/hmmsort.mat"
     assert window.filelist.itemText(1) == "./channel002/hmmsort.mat"
