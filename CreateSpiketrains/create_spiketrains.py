@@ -220,6 +220,11 @@ class ViewWidget(QMainWindow):
                 retval = msg.exec_()
 
     def find_files(self):
+        #reset counters
+        self.counter = 0
+        self.merged_lines = []
+        self.merged_colors = []
+        self.picked_lines = []
         for root, dirs, files in os.walk("."):
             for file in files:
                 if file == "hmmsort.mat":
