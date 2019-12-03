@@ -6,7 +6,8 @@ import scipy.io as mio
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget,
-                             QVBoxLayout, QPushButton, QInputDialog, QMessageBox)
+                             QVBoxLayout, QPushButton, QInputDialog,
+                             QComboBox, QMessageBox)
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import (
     FigureCanvasQTAgg as FigureCanvas,
@@ -70,8 +71,11 @@ class ViewWidget(QMainWindow):
         self.navigation_toolbar = SimplerToolbar(self.figure_canvas, self,
                                                  coordinates=False)  # turn off coordinates
         self.navigation_toolbar.spiketrain_button.clicked.connect(self.save_spiketrains)
-
+        self.filelist = QComboBox()
+        self.filelist.activated.connect(self.select_file)
         layout.addWidget(self.navigation_toolbar, 0)
+        #add selection of files here
+        layout.addWidget(self.filelist)
         layout.addWidget(self.figure_canvas, 10)
         self.figure = self.figure_canvas.figure
 
@@ -130,6 +134,7 @@ class ViewWidget(QMainWindow):
 
     def plot_waveforms(self, waveforms):
         ax = self.figure.axes[0]
+        ax.clear()
         sd = 4
         noise = sd*math.sqrt(1/self.cinv) # calculates standard deviation
         if (self.ishdf5 == True):
@@ -145,6 +150,7 @@ class ViewWidget(QMainWindow):
                 ax.axhline(y=-noise, color='k')
                 p = ax.plot(waveforms[i, 0, :], label="Waveform %d" % (i, ), picker=5)
         ax.legend()
+        self.figure.canvas.draw()
 
     def save_spiketrains(self, notify=True):
         tot_timestamps = []
@@ -216,6 +222,20 @@ class ViewWidget(QMainWindow):
                 msg.setWindowTitle("Info")
                 retval = msg.exec_()
 
+    def find_files(self):
+        #reset counters
+        self.counter = 0
+        self.merged_lines = []
+        self.merged_colors = []
+        self.picked_lines = []
+        for root, dirs, files in os.walk("."):
+            for file in files:
+                if file == "hmmsort.mat":
+                    self.filelist.addItem(os.path.join(root, file))
+
+    def select_file(self,i):
+        self.select_waveforms(self.filelist.currentText())
+
     def select_waveforms(self, fname="hmmsort.mat", cinv_fname = "spike_templates.hdf5"):
         if not os.path.isfile(fname):
             ff = os.path.join("hmmsort", fname)
@@ -276,7 +296,7 @@ def create_spiketrains(window_class):
     window = window_class()
     app.references.add(window)
     window.show()
-    window.select_waveforms()
+    window.find_files()
     if app_created:
         app.exec_()
     return window

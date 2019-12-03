@@ -7,6 +7,7 @@ from urllib.request import urlopen
 import tempfile
 import hashlib
 import scipy.io as mio
+import shutil
 
 def download_file(fname):
     _file = urlopen("http://cortex.nus.edu.sg/testdata/array01/channel001/%s" % (fname,))
@@ -64,5 +65,27 @@ def test_pick_lines(qtbot):
     os.unlink("hmmsort.mat")
     os.unlink("spike_templates.hdf5")
 
+    #auto-discovery
+    os.mkdir("channel001")
+    os.mkdir("channel002")
+    shutil.copyfile("hmmsort.mat", "channel001/hmmsort.mat")
+    shutil.copyfile("spike_templates.hdf5", "channel001/spike_templates.hdf5")
+    shutil.copyfile("hmmsort.mat", "channel002/hmmsort.mat")
+    shutil.copyfile("spike_templates.hdf5", "channel002/spike_templates.hdf5")
+    os.unlink("hmmsort.mat")
+    os.unlink("spike_templates.hdf5")
+    window.find_files()
+    assert len(window.picked_lines) == 0
+    assert len(window.merged_lines) == 0
+
+    assert window.filelist.count() == 2
+    assert window.filelist.itemText(0) == "./channel001/hmmsort.mat"
+    assert window.filelist.itemText(1) == "./channel002/hmmsort.mat"
+
+    #cleanup
+    for ch in ['channel001','channel002']:
+        for f in ['hmmsort.mat','spike_templates.hdf5']:
+            os.unlink(os.path.join(ch,f))
+        os.rmdir(ch)
     os.chdir(cwd)
     os.rmdir(dd)
