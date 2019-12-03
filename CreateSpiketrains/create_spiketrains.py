@@ -114,7 +114,7 @@ class ViewWidget(QMainWindow):
             artist.set_linewidth(lw/2)
             self.picked_lines.remove(label)
 
-        if event.mouseevent:
+        if event.mouseevent and event.mouseevent.key is not None:
             self.key = event.mouseevent.key
         else:
             self.key = QApplication.keyboardModifiers()
