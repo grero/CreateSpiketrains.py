@@ -229,6 +229,9 @@ class ViewWidget(QMainWindow):
                     celldirs = glob.glob(os.path.join(root, "cell*"))
                     if len(celldirs) == 0:
                         self.filelist.addItem(os.path.join(root, file))
+        if self.filelist.count() > 0:
+            self.filelist.setCurrentIndex(0)
+            self.select_file(0)
 
     def select_file(self,i):
         #reset counters
