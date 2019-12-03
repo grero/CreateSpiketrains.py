@@ -131,6 +131,7 @@ class ViewWidget(QMainWindow):
 
     def plot_waveforms(self, waveforms):
         ax = self.figure.axes[0]
+        ax.clear()
         sd = 4
         noise = sd*math.sqrt(1/self.cinv) # calculates standard deviation
         if (self.ishdf5 == True):
@@ -146,6 +147,7 @@ class ViewWidget(QMainWindow):
                 ax.axhline(y=-noise, color='k')
                 p = ax.plot(waveforms[i, 0, :], label="Waveform %d" % (i, ), picker=5)
         ax.legend()
+        self.figure.canvas.draw()
 
     def save_spiketrains(self, notify=True):
         tot_timestamps = []
@@ -286,7 +288,7 @@ def create_spiketrains(window_class):
     window = window_class()
     app.references.add(window)
     window.show()
-    window.select_waveforms()
+    window.find_files()
     if app_created:
         app.exec_()
     return window
