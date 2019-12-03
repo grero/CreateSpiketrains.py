@@ -26,7 +26,7 @@ def test_pick_lines(qtbot):
     window.select_waveforms()
     qtbot.addWidget(window)
     #simulate a pick event
-    event1 = matplotlib.backend_bases.PickEvent("A pick", window.figure.canvas, [],window.figure.axes[0].lines[0])
+    event1 = matplotlib.backend_bases.PickEvent("A pick", window.figure.canvas, [],window.figure.axes[0].lines[0])    
     window.pick_event(event1)
     event2 = matplotlib.backend_bases.PickEvent("A pick", window.figure.canvas, [],window.figure.axes[0].lines[1])
     window.pick_event(event2)
@@ -63,6 +63,7 @@ def test_pick_lines(qtbot):
     os.rmdir("cell01")
     os.unlink("hmmsort.mat")
     os.unlink("spike_templates.hdf5")
+    assert len(window.picked_lines) == 0
 
     os.chdir(cwd)
     os.rmdir(dd)
