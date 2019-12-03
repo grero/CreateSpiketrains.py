@@ -226,7 +226,9 @@ class ViewWidget(QMainWindow):
         for root, dirs, files in os.walk("."):
             for file in files:
                 if file == "hmmsort.mat":
-                    self.filelist.addItem(os.path.join(root, file))
+                    celldirs = glob.glob(os.path.join(root, "cell*"))
+                    if len(celldirs) == 0:
+                        self.filelist.addItem(os.path.join(root, file))
 
     def select_file(self,i):
         #reset counters
