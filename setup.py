@@ -11,7 +11,6 @@ setup(name='CreateSpiketrains',
     install_requires=["PyQt5",
                       "scipy",
                       "matplotlib",
-                      "glob",
                       "h5py",
                       "numpy"],
     scripts=['CreateSpiketrains/create_spiketrains.py']
