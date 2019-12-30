@@ -8,5 +8,11 @@ setup(name='CreateSpiketrains',
     author='Roger Herikstad',
     author_email='roger.herikstad@gmail.com',
     packages=['CreateSpiketrains'],
+    install_requires=["PyQt5",
+                      "scipy",
+                      "matplotlib",
+                      "glob",
+                      "h5py",
+                      "numpy"],
     scripts=['CreateSpiketrains/create_spiketrains.py']
 )
